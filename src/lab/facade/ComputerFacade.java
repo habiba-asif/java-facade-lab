@@ -3,23 +3,25 @@ package lab.facade;
 public class ComputerFacade {
     private final Cpu cpu;
     private final Memory memory;
-    private final HardDrive hd;
+    private final IHardDrive hd;
 
     private static final long BOOT_ADDRESS = 0x1000;
     private static final long BOOT_SECTOR = 0x2000;
     private static final int SECTOR_SIZE = 64;
 
+    private boolean sleeping = false;
+
     public ComputerFacade() {
         this.cpu = new Cpu();
         this.memory = new Memory();
-        this.hd = new HardDrive();
+        this.hd = new Hdd();
     }
 
-public ComputerFacade(Cpu cpu, Memory memory, HardDrive hd) {
-    this.cpu = cpu;
-    this.memory = memory;
-    this.hd = hd;
-}
+    public ComputerFacade(Cpu cpu, Memory memory, IHardDrive hd) {
+        this.cpu = cpu;
+        this.memory = memory;
+        this.hd = hd;
+    }
 
     public void start() {
         System.out.println("Facade: starting computer");
@@ -34,5 +36,24 @@ public ComputerFacade(Cpu cpu, Memory memory, HardDrive hd) {
     public void shutdown() {
         System.out.println("Facade: shutting down computer");
         System.out.println("Facade: power off\n");
+
+        // Print metrics
+        System.out.println("=== Metrics Report ===");
+        System.out.println("CPU execute calls: " + Cpu.getExecuteCount());
+        System.out.println("Memory load calls: " + Memory.getLoadCount());
+        System.out.println("HardDrive read calls: " + Hdd.getReadCount());
+        System.out.println("======================");
+    }
+
+    public void sleep() {
+        System.out.println("Facade: saving state + lowering power");
+        sleeping = true;
+    }
+
+    public void wake() {
+        if (sleeping) {
+            System.out.println("Facade: restoring state + full power");
+            sleeping = false;
+        }
     }
 }

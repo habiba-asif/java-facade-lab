@@ -1,6 +1,8 @@
 package lab.facade;
 
 public class Cpu {
+    private static int executeCount = 0;
+
     public void freeze() {
         System.out.println(System.currentTimeMillis() + " | CPU: freeze");
     }
@@ -10,6 +12,11 @@ public class Cpu {
     }
 
     public void execute() {
+        executeCount++;
         System.out.println(System.currentTimeMillis() + " | CPU: execute");
+    }
+
+    public static int getExecuteCount() {
+        return executeCount;
     }
 }

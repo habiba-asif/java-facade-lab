@@ -2,10 +2,15 @@ package lab.facade;
 
 public class Main {
     public static void main(String[] args) {
-        ComputerFacade computer = new ComputerFacade();
+        IHardDrive myHdd = new Hdd(); 
+        ComputerFacade computer = new ComputerFacade(new Cpu(), new Memory(), myHdd);
+
         computer.start();
-        // pretend the computer does some work
+
+        computer.start();
+
         System.out.println("Main: doing user tasks...\n");
+
         computer.shutdown();
     }
 }
